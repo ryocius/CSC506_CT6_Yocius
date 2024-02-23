@@ -67,6 +67,7 @@ class Node:
                     line = " | " + line
                 lines.append(line)
         return "\n".join(lines)
+
 class Tree:
     def __init__(self, inArray):
         self.root = self.build_tree(inArray)
@@ -147,6 +148,7 @@ class Tree:
         print(out)
 
     def __repr__(self):
+        print()
         return repr(self.root)
 
 
