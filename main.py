@@ -69,7 +69,6 @@ class Node:
         return "\n".join(lines)
 class Tree:
     def __init__(self, inArray):
-        self.inArray = inArray
         self.root = self.build_tree(inArray)
 
     def build_tree(self, inArray):
@@ -77,43 +76,45 @@ class Tree:
         inArray = list(set(inArray))
         # Sort array
         inArray.sort()
-        return self._build_tree_recurs(inArray, 0, len(inArray) - 1)
+        return self.__build_tree_recurs(inArray, 0, len(inArray) - 1)
 
-    def _build_tree_recurs(self, inArray, start, end):
+    def __build_tree_recurs(self, inArray, start, end):
         if start > end:
             return None
         mid = (start + end) // 2
         node = Node(inArray[mid])
-        node.leftChild = self._build_tree_recurs(inArray, start, mid-1)
-        node.rightChild = self._build_tree_recurs(inArray, mid + 1, end)
+        node.leftChild = self.__build_tree_recurs(inArray, start, mid-1)
+        node.rightChild = self.__build_tree_recurs(inArray, mid + 1, end)
         return node
 
     def insert(self, data):
-        self.root = self._insert(self.root, data)
-        self._rebalance()
+        self.root = self.__insert(self.root, data)
+        self.__rebalance()
 
     # protected recursive insert
-    def _insert(self, root, data):
+    def __insert(self, root, data):
         if root is None:
             return Node(data)
 
-        if data < self.root.data:
-            root.leftChild = self._insert(root.leftChild, data)
-        elif data > root.data:
-            root.rightChild = self._insert(root.rightChild, data)
+        node = Node(data)
+        if node < root: # refactored to utilize Comparable module
+            root.leftChild = self.__insert(root.leftChild, data)
+        elif node > root: # refactored to utilize Comparable module
+            root.rightChild = self.__insert(root.rightChild, data)
         return root
 
-    def _rebalance(self):
-        sorted = self._inorder_traversal(self.root)
-        self.root = self._build_tree_recurs(sorted, 0, len(sorted) - 1)
+    def __rebalance(self):
+        sorted = self.__inorder_traversal(self.root)
+        self.root = self.__build_tree_recurs(sorted, 0, len(sorted) - 1)
 
     def delete(self, root, data):
         if root is None:
             return root
 
-        if data < root.data:
+        node = Node(data) # refactored to utilize Comparable module
+        if node < root:
             root.leftChild = self.delete(root.leftChild, data)
-        elif data > root.data:
+        elif node > root:
             root.rightChild = self.delete(root.rightChild, data)
         else:
             if root.leftChild is None:
@@ -123,26 +124,26 @@ class Tree:
                 temp = root.left
                 return temp
 
-            temp = self._min_val_node(root.rightChild)
+            temp = self.__min_val_node(root.rightChild)
             root.data = temp.data
-            root.right = self.delete(root.right, temp.data)
+            root.right = self.delete(root.rightChild, temp.data)
 
-        self._rebalance()
+        self.__rebalance()
         return root
 
-    def _min_val_node(self, node):
+    def __min_val_node(self, node):
         current = node
         while current.leftChild is not None:
             current = current.leftChild
         return current
 
-    def _inorder_traversal(self, node):
+    def __inorder_traversal(self, node):
         if node is None:
             return []
-        return self._inorder_traversal(node.leftChild) + [node.data] + self._inorder_traversal(node.rightChild)
+        return self.__inorder_traversal(node.leftChild) + [node.data] + self.__inorder_traversal(node.rightChild)
 
     def printSorted(self):
-        out = self._inorder_traversal(self.root)
+        out = self.__inorder_traversal(self.root)
         print(out)
 
     def __repr__(self):
@@ -155,8 +156,8 @@ tree = Tree(array)
 print("Root node value:", tree.root.data)
 
 print(tree)
-tree.insert(2)
+tree.insert(450)
 print(tree)
-tree.delete(tree.root, 2)
+tree.delete(tree.root, 450)
 print(tree)
 tree.printSorted()
