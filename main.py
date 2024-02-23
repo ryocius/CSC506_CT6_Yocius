@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, data, rightChild = None, leftChild = None):
+    def __init__(self, data, rightChild=None, leftChild=None):
         self.data = data
         self.leftChild = rightChild
         self.rightChild = leftChild
@@ -68,6 +68,7 @@ class Node:
                 lines.append(line)
         return "\n".join(lines)
 
+
 class Tree:
     def __init__(self, inArray):
         self.root = self.build_tree(inArray)
@@ -84,7 +85,7 @@ class Tree:
             return None
         mid = (start + end) // 2
         node = Node(inArray[mid])
-        node.leftChild = self.__build_tree_recurs(inArray, start, mid-1)
+        node.leftChild = self.__build_tree_recurs(inArray, start, mid - 1)
         node.rightChild = self.__build_tree_recurs(inArray, mid + 1, end)
         return node
 
@@ -98,9 +99,9 @@ class Tree:
             return Node(data)
 
         node = Node(data)
-        if node < root: # refactored to utilize Comparable module
+        if node < root:  # refactored to utilize Comparable module
             root.leftChild = self.__insert(root.leftChild, data)
-        elif node > root: # refactored to utilize Comparable module
+        elif node > root:  # refactored to utilize Comparable module
             root.rightChild = self.__insert(root.rightChild, data)
         return root
 
@@ -112,7 +113,7 @@ class Tree:
         if root is None:
             return root
 
-        node = Node(data) # refactored to utilize Comparable module
+        node = Node(data)  # refactored to utilize Comparable module
         if node < root:
             root.leftChild = self.delete(root.leftChild, data)
         elif node > root:
@@ -152,8 +153,7 @@ class Tree:
         return repr(self.root)
 
 
-
-array = [1,7,4,23,8,9,4,3,5,7,9,67,6345,324]
+array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = Tree(array)
 print("Root node value:", tree.root.data)
 
